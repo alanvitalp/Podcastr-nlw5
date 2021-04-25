@@ -12,6 +12,7 @@ import { api } from '../../services/api';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
 import { usePlayer } from '../../contexts/PlayerContext';
 import Head from 'next/head';
+import { DarkUsePlayer } from '../../contexts/DarkThemeContext';
 
 type Episode = {
   id: string;
@@ -33,46 +34,51 @@ type EpisodeProps = {
 export default function Episode({ episode }: EpisodeProps) {
   const { play } = usePlayer();
 
+  const { isDark } = DarkUsePlayer();
+
   return (
-    <div className={styles.episode}>
-      <Head>
-        <title>
-          {episode.title} | Podcastr
+
+    <div className={isDark ? styles.dark : ''}>
+      < div className={isDark ? styles.darkEpisode : styles.episode} >
+        <Head>
+          <title>
+            {episode.title} | Podcastr
         </title>
-      </Head>
-      <div className={styles.thumbnailContainer}>
-        <Link href="/">
-          <button type="button">
-            <img src="/arrow-left.svg" alt="voltar" />
+        </Head>
+        <div className={styles.thumbnailContainer}>
+          <Link href="/">
+            <button type="button">
+              <img src="/arrow-left.svg" alt="voltar" />
+            </button>
+          </Link>
+
+          <Image
+            width={700}
+            height={160}
+            src={episode.thumbnail}
+            objectFit="cover"
+
+          />
+          <button
+            type="button"
+            onClick={() => play(episode)}
+          >
+            <img src="/play.svg" alt="tocar episodio" />
           </button>
-        </Link>
+        </div>
 
-        <Image
-          width={700}
-          height={160}
-          src={episode.thumbnail}
-          objectFit="cover"
+        <header>
+          <h1>{episode.title}</h1>
+          <span>{episode.members}</span>
+          <span>{episode.publishedAt}</span>
+          <span>{episode.durationAsString}</span>
+        </header>
 
-        />
-        <button
-          type="button"
-          onClick={() => play(episode)}
-        >
-          <img src="/play.svg" alt="tocar episodio" />
-        </button>
-      </div>
-
-      <header>
-        <h1>{episode.title}</h1>
-        <span>{episode.members}</span>
-        <span>{episode.publishedAt}</span>
-        <span>{episode.durationAsString}</span>
-      </header>
-
-      <div
-        className={styles.description}
-        dangerouslySetInnerHTML={{ __html: episode.description }} />
-    </div>
+        <div
+          className={styles.description}
+          dangerouslySetInnerHTML={{ __html: episode.description }} />
+      </div >
+    </div >
   )
 }
 

@@ -7,10 +7,12 @@ import Image from 'next/image';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
+import { DarkUsePlayer } from '../../contexts/DarkThemeContext';
 
 
 export function Player() {
 
+  const { isDark } = DarkUsePlayer();
   const [progress, setProgress] = useState(0);
 
 
@@ -68,7 +70,7 @@ export function Player() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   return (
-    <div className={styles.playerContainer}>
+    <div className={isDark ? styles.darkPlayerContainer : styles.playerContainer}>
       <header>
         <img src="/playing.svg" alt="playing now" />
         <strong>Tocando agora</strong>
@@ -86,13 +88,13 @@ export function Player() {
           <span>{episode.members}</span>
         </div>
       ) : (
-        <div className={styles.emptyPlayer}>
+        <div className={isDark ? styles.darkEmptyPlayer : styles.emptyPlayer}>
           <strong>Selecione um podcast para ouvir</strong>
         </div>
       )}
 
       <footer className={!episode ? styles.empty : ''}>
-        <div className={styles.progress}>
+        <div className={isDark ? styles.darkProgress : styles.progress}>
           <span>{convertDurationToTimeString(progress)}</span>
           <div className={styles.slider}>
             {episode ?
@@ -100,9 +102,9 @@ export function Player() {
                 <Slider
                   max={episode.duration}
                   value={progress}
-                  trackStyle={{ backgroundColor: '#04d361' }}
-                  railStyle={{ backgroundColor: '#9f65ff' }}
-                  handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
+                  trackStyle={!isDark ? { backgroundColor: '#04d361' } : { backgroundColor: '#fff' }}
+                  railStyle={!isDark ? { backgroundColor: '#9f65ff' } : { backgroundColor: '#2c292c' }}
+                  handleStyle={!isDark ? { borderColor: '#04d361', borderWidth: 4 } : { backgroundColor: '#fff', borderWidth: 0 }}
                   onChange={handleSeek}
                 />
               )
@@ -126,7 +128,7 @@ export function Player() {
           />
         )}
 
-        <div className={styles.buttons}>
+        <div className={isDark ? styles.darkButtons : styles.buttons}>
           <button
             type="button"
             disabled={!episode || episodeList.length === 1}

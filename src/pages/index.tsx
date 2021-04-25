@@ -9,6 +9,7 @@ import { convertDurationToTimeString } from '../utils/convertDurationToTimeStrin
 
 import styles from './home.module.scss';
 import { usePlayer } from '../contexts/PlayerContext';
+import { DarkUsePlayer } from '../contexts/DarkThemeContext';
 
 
 type Episode = {
@@ -32,16 +33,18 @@ type HomeProps = {
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
   const { playList } = usePlayer();
 
+  const { isDark } = DarkUsePlayer();
+
   const episodeList = [...latestEpisodes, ...allEpisodes];
 
   return (
-    <div className={styles.homepage}>
+    <div className={isDark ? styles.darkHomePage : styles.homepage}>
       <Head>
         <title>
           Home | Podcastr
         </title>
       </Head>
-      <section className={styles.latestEpisodes}>
+      <section className={isDark ? styles.darkLatestEpisodes : styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
 
         <ul>
@@ -77,7 +80,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           })}
         </ul>
       </section>
-      <section className={styles.allEpisodes}>
+      <section className={isDark ? styles.darkAllEpisodes : styles.allEpisodes}>
         <h2>Todos episódios</h2>
         <table cellSpacing={0}>
           <thead>
