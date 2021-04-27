@@ -27,7 +27,7 @@ export function Header() {
 
       <span>{currentDate}</span>
 
-      <span><CgDarkMode onClick={darkTheme} className={styles.darkModeButton} /></span>
+      <CgDarkMode onClick={darkTheme} className={styles.darkModeButton} />
 
     </header>
   );

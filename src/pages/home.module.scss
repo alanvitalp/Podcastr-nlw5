@@ -257,8 +257,10 @@
       border-bottom: 1px solid var(--gray-100);
     }
 
+
     th {
       color: var(--gray-200);
+      filter: brightness(0.4);
       text-transform: uppercase;
       font: 500 0.75rem Lexend, sans-serif;
       text-align: left;
